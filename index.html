@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TITAN GYM - Rastreador de Musculação & Treinos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background-color: #07090e; color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .glass { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .emerald-glow { text-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="glass sticky top-0 z-50 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center font-bold text-white shadow-lg shadow-brand-500/20">
+          <i class="fa-solid fa-dumbbell text-lg"></i>
+        </div>
+        <div>
+          <span class="font-extrabold text-xl tracking-tight">TITAN <span class="text-brand-400 font-light">GYM</span></span>
+          <span class="block text-[10px] text-gray-400 tracking-wider font-mono">OPEN FITNESS ENGINE</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <a href="https://buymeacoffee.com/carlosdevkadu" target="_blank" class="bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-lg shadow-amber-500/20 transition">
+          <i class="fa-solid fa-mug-hot"></i> Apoiar Criador
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl mx-auto px-4 py-8 w-full space-y-8">
+    
+    <!-- Top Stats Bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="glass p-4 rounded-2xl border border-gray-800">
+        <span class="text-xs text-gray-400 block mb-1">Sequência Ativa</span>
+        <span class="text-xl font-bold text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-fire text-amber-500"></i> 4 Dias Seguidos
+        </span>
+      </div>
+      <div class="glass p-4 rounded-2xl border border-gray-800">
+        <span class="text-xs text-gray-400 block mb-1">Volume Semanal</span>
+        <span class="text-xl font-bold text-brand-400 font-mono" id="totalVolume">14.850 kg</span>
+      </div>
+      <div class="glass p-4 rounded-2xl border border-gray-800">
+        <span class="text-xs text-gray-400 block mb-1">Músculo Pronto</span>
+        <span class="text-xl font-bold text-emerald-400 flex items-center gap-1">
+          <i class="fa-solid fa-heart-pulse"></i> Peito (100%)
+        </span>
+      </div>
+      <div class="glass p-4 rounded-2xl border border-gray-800">
+        <span class="text-xs text-gray-400 block mb-1">Próximo Treino</span>
+        <span class="text-xl font-bold text-white">Push A (Peito & Tríceps)</span>
+      </div>
+    </div>
+
+    <!-- Workout Area & Floating Rest Timer -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Left: Workout Live Tracker -->
+      <div class="lg:col-span-8 space-y-6">
+        
+        <div class="glass rounded-2xl p-6 border border-gray-800 space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+            <div>
+              <h2 class="text-xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-brand-400"></i> Sessão de Treino: Push A
+              </h2>
+              <p class="text-xs text-gray-400">Registre suas cargas, repetições e supere seus recordes.</p>
+            </div>
+            <button onclick="finishWorkout()" class="bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-lg shadow-brand-500/20">
+              <i class="fa-solid fa-flag-checkered mr-1"></i> Finalizar Treino
+            </button>
+          </div>
+
+          <!-- Exercise 1 -->
+          <div class="bg-gray-900/60 rounded-xl p-4 border border-gray-800/80 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-lg bg-gray-800 text-brand-400 flex items-center justify-center font-bold text-xs">1</span>
+                <div>
+                  <h3 class="font-bold text-sm text-white">Supino Reto com Barra</h3>
+                  <span class="text-[11px] text-gray-400">Peitoral Maior • Tríceps • Deltoide Anterior</span>
+                </div>
+              </div>
+              <span class="text-xs font-mono bg-gray-800 text-gray-300 px-2.5 py-1 rounded-lg">Recorde: 95 kg</span>
+            </div>
+
+            <!-- Set Rows -->
+            <div class="space-y-2 text-xs font-mono">
+              <div class="grid grid-cols-12 gap-2 text-gray-400 text-[11px] px-2 uppercase">
+                <span class="col-span-2">Série</span>
+                <span class="col-span-3">Anterior</span>
+                <span class="col-span-3">Carga (kg)</span>
+                <span class="col-span-2">Reps</span>
+                <span class="col-span-2 text-center">Feito</span>
+              </div>
+
+              <!-- Set 1 -->
+              <div class="grid grid-cols-12 gap-2 items-center bg-gray-950 p-2 rounded-lg border border-gray-800" id="setRow1">
+                <span class="col-span-2 text-gray-300 font-bold px-1">1</span>
+                <span class="col-span-3 text-gray-500">80 kg x 10</span>
+                <input type="number" value="80" class="col-span-3 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white text-center focus:outline-none focus:border-brand-500">
+                <input type="number" value="10" class="col-span-2 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white text-center focus:outline-none focus:border-brand-500">
+                <button onclick="toggleSet(this, 80, 10)" class="col-span-2 bg-gray-800 hover:bg-brand-600 text-gray-300 hover:text-white rounded py-1 font-bold text-center transition">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              </div>
+
+              <!-- Set 2 -->
+              <div class="grid grid-cols-12 gap-2 items-center bg-gray-950 p-2 rounded-lg border border-gray-800" id="setRow2">
+                <span class="col-span-2 text-gray-300 font-bold px-1">2</span>
+                <span class="col-span-3 text-gray-500">85 kg x 8</span>
+                <input type="number" value="85" class="col-span-3 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white text-center focus:outline-none focus:border-brand-500">
+                <input type="number" value="8" class="col-span-2 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white text-center focus:outline-none focus:border-brand-500">
+                <button onclick="toggleSet(this, 85, 8)" class="col-span-2 bg-gray-800 hover:bg-brand-600 text-gray-300 hover:text-white rounded py-1 font-bold text-center transition">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              </div>
+
+              <!-- Set 3 -->
+              <div class="grid grid-cols-12 gap-2 items-center bg-gray-950 p-2 rounded-lg border border-gray-800" id="setRow3">
+                <span class="col-span-2 text-gray-300 font-bold px-1">3</span>
+                <span class="col-span-3 text-gray-500">90 kg x 6</span>
+                <input type="number" value="90" class="col-span-3 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white text-center focus:outline-none focus:border-brand-500">
+                <input type="number" value="6" class="col-span-2 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white text-center focus:outline-none focus:border-brand-500">
+                <button onclick="toggleSet(this, 90, 6)" class="col-span-2 bg-gray-800 hover:bg-brand-600 text-gray-300 hover:text-white rounded py-1 font-bold text-center transition">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Exercise 2 -->
+          <div class="bg-gray-900/60 rounded-xl p-4 border border-gray-800/80 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-lg bg-gray-800 text-brand-400 flex items-center justify-center font-bold text-xs">2</span>
+                <div>
+                  <h3 class="font-bold text-sm text-white">Desenvolvimento com Halteres</h3>
+                  <span class="text-[11px] text-gray-400">Deltoides • Tríceps</span>
+                </div>
+              </div>
+              <span class="text-xs font-mono bg-gray-800 text-gray-300 px-2.5 py-1 rounded-lg">Recorde: 28 kg</span>
+            </div>
+
+            <div class="space-y-2 text-xs font-mono">
+              <div class="grid grid-cols-12 gap-2 items-center bg-gray-950 p-2 rounded-lg border border-gray-800">
+                <span class="col-span-2 text-gray-300 font-bold px-1">1</span>
+                <span class="col-span-3 text-gray-500">26 kg x 10</span>
+                <input type="number" value="26" class="col-span-3 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white text-center focus:outline-none focus:border-brand-500">
+                <input type="number" value="10" class="col-span-2 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white text-center focus:outline-none focus:border-brand-500">
+                <button onclick="toggleSet(this, 26, 10)" class="col-span-2 bg-gray-800 hover:bg-brand-600 text-gray-300 hover:text-white rounded py-1 font-bold text-center transition">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: Rest Timer & 1RM Calculator -->
+      <div class="lg:col-span-4 space-y-6">
+        
+        <!-- Floating Rest Timer Card -->
+        <div class="glass rounded-2xl p-6 border-2 border-brand-500/30 text-center space-y-4 shadow-xl shadow-brand-500/10">
+          <div class="flex items-center justify-between text-xs text-gray-400 uppercase tracking-wider">
+            <span>Cronômetro de Descanso</span>
+            <span class="text-brand-400 font-bold"><i class="fa-solid fa-stopwatch"></i> Ativo</span>
+          </div>
+          
+          <div class="text-6xl font-black font-mono tracking-tighter text-white" id="timerDisplay">
+            01:30
+          </div>
+
+          <div class="flex items-center justify-center gap-2">
+            <button onclick="addTime(-15)" class="bg-gray-800 hover:bg-gray-700 text-xs px-3 py-1.5 rounded-lg border border-gray-700">-15s</button>
+            <button onclick="toggleTimer()" id="timerBtn" class="bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs px-5 py-2 rounded-lg shadow-lg shadow-brand-500/20">
+              Iniciar
+            </button>
+            <button onclick="resetTimer()" class="bg-gray-800 hover:bg-gray-700 text-xs px-3 py-1.5 rounded-lg border border-gray-700">Zerar</button>
+            <button onclick="addTime(15)" class="bg-gray-800 hover:bg-gray-700 text-xs px-3 py-1.5 rounded-lg border border-gray-700">+15s</button>
+          </div>
+        </div>
+
+        <!-- 1RM Calculator -->
+        <div class="glass rounded-2xl p-6 border border-gray-800 space-y-4">
+          <h3 class="font-bold text-sm flex items-center gap-2">
+            <i class="fa-solid fa-calculator text-brand-400"></i> Calculadora de 1RM (Carga Máxima)
+          </h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-[11px] text-gray-400 block mb-1">Carga (kg)</label>
+              <input type="number" id="calcWeight" value="100" oninput="calc1RM()" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-sm font-mono text-center">
+            </div>
+            <div>
+              <label class="text-[11px] text-gray-400 block mb-1">Repetições</label>
+              <input type="number" id="calcReps" value="5" oninput="calc1RM()" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-sm font-mono text-center">
+            </div>
+          </div>
+          <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 text-center">
+            <span class="text-xs text-gray-400 block">1RM Estimado (1 Repetição Máxima)</span>
+            <span class="text-2xl font-black text-brand-400 font-mono" id="calcResult">116.7 kg</span>
+          </div>
+        </div>
+
+        <!-- Muscle Recovery Radar -->
+        <div class="glass rounded-2xl p-6 border border-gray-800 space-y-3">
+          <h3 class="font-bold text-sm flex items-center gap-2">
+            <i class="fa-solid fa-chart-simple text-brand-400"></i> Recuperação Muscular
+          </h3>
+          <div class="space-y-2.5 text-xs">
+            <div>
+              <div class="flex justify-between text-gray-300 mb-1">
+                <span>Peitoral</span>
+                <span class="text-emerald-400 font-bold">100% (Pronto)</span>
+              </div>
+              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-full w-full"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-gray-300 mb-1">
+                <span>Tríceps</span>
+                <span class="text-amber-400 font-bold">45% (Fadigado)</span>
+              </div>
+              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-amber-500 h-full w-[45%]"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-gray-300 mb-1">
+                <span>Dorsais</span>
+                <span class="text-emerald-400 font-bold">90% (Recuperado)</span>
+              </div>
+              <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-full w-[90%]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Legal & Compliance Footer -->
+  <footer class="border-t border-gray-900 bg-black/60 py-8 px-4 text-xs text-gray-500 mt-12">
+    <div class="max-w-7xl mx-auto space-y-4 text-center sm:text-left">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="font-bold text-gray-300">TITAN GYM PRO</span> &copy; 2026. Plataforma de treinamento esportivo e rastreamento de alta performance mantida por <a href="https://github.com/carloseduardoscsouza-dot" target="_blank" class="text-brand-400 hover:underline">Carlos</a>.
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="https://buymeacoffee.com/carlosdevkadu" target="_blank" class="text-amber-400 hover:underline flex items-center gap-1">
+            <i class="fa-solid fa-mug-hot"></i> Apoiar no Buy Me a Coffee
+          </a>
+          <a href="https://github.com/DuarteSantos8/openGym" target="_blank" class="text-gray-400 hover:underline">
+            Motor openGym (AGPLv3)
+          </a>
+        </div>
+      </div>
+      <div class="pt-3 border-t border-gray-900/80 text-[11px] text-gray-600 leading-relaxed">
+        <p><b>Aviso Legal & Isenção Médica:</b> O TITAN GYM é uma ferramenta tecnológica para registro de cargas e auto-rastreamento. Consulte sempre um médico e profissional de educação física antes de iniciar treinos de alta intensidade. Distribuído sob os termos da licença GNU AGPLv3.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let timerSeconds = 90;
+    let timerInterval = null;
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerSeconds / 60);
+      const secs = timerSeconds % 60;
+      document.getElementById('timerDisplay').innerText = 
+        String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('timerBtn');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        btn.innerText = 'Retomar';
+        btn.classList.remove('bg-amber-600');
+        btn.classList.add('bg-brand-600');
+      } else {
+        btn.innerText = 'Pausar';
+        btn.classList.remove('bg-brand-600');
+        btn.classList.add('bg-amber-600');
+        timerInterval = setInterval(() => {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            btn.innerText = 'Concluído!';
+            alert('⏰ Tempo de descanso encerrado! Próxima série!');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerSeconds = 90;
+      updateTimerDisplay();
+      document.getElementById('timerBtn').innerText = 'Iniciar';
+    }
+
+    function addTime(secs) {
+      timerSeconds = Math.max(0, timerSeconds + secs);
+      updateTimerDisplay();
+    }
+
+    function toggleSet(btn, weight, reps) {
+      const row = btn.closest('.grid');
+      btn.classList.toggle('bg-brand-600');
+      btn.classList.toggle('bg-gray-800');
+      btn.classList.toggle('text-white');
+      
+      // Auto trigger timer on set completion
+      resetTimer();
+      toggleTimer();
+    }
+
+    function calc1RM() {
+      const w = parseFloat(document.getElementById('calcWeight').value) || 0;
+      const r = parseFloat(document.getElementById('calcReps').value) || 1;
+      // Epley Formula: 1RM = Weight * (1 + Reps / 30)
+      const oneRM = w * (1 + r / 30);
+      document.getElementById('calcResult').innerText = oneRM.toFixed(1) + ' kg';
+    }
+
+    function finishWorkout() {
+      alert('🏆 Treino Concluído com Sucesso!\n\nVolume total levantado: 3.420 kg\nTempo total: 45 minutos\nSequência aumentada para 5 dias!');
+    }
+
+    calc1RM();
+    updateTimerDisplay();
+  </script>
+</body>
+</html>
